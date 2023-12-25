@@ -1,6 +1,3 @@
-const speed = document.getElementById("showGameSpeed");
-const increaseSpeed = document.querySelector(".slider");
-
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -8,12 +5,6 @@ const CANVAS_WIDTH = (canvas.width = 800);
 const CANVAS_HEIGHT = (canvas.height = 700);
 
 let gameSpeed = 5;
-speed.textContent = gameSpeed;
-increaseSpeed.value = gameSpeed;
-increaseSpeed.addEventListener("input", (e) => {
-  gameSpeed = parseInt(e.target.value);
-  speed.textContent = gameSpeed;
-});
 
 const backgroundLayer1 = new Image();
 backgroundLayer1.src = "layer-1.png";
@@ -26,13 +17,22 @@ backgroundLayer4.src = "layer-4.png";
 const backgroundLayer5 = new Image();
 backgroundLayer5.src = "layer-5.png";
 
+window.addEventListener("load", function () {
+  const speed = document.getElementById("showGameSpeed");
+  const increaseSpeed = document.querySelector(".slider");
+  speed.textContent = gameSpeed;
+  increaseSpeed.value = gameSpeed;
+  increaseSpeed.addEventListener("input", (e) => {
+    gameSpeed = parseInt(e.target.value);
+    speed.textContent = gameSpeed;
+  });
+});
 class Layer {
   constructor(image, speedModifier) {
     this.x = 0;
     this.y = 0;
     this.width = 2400;
     this.height = 700;
-    // this.x2 = this.width;
     this.image = image;
     this.speedModifier = speedModifier;
     this.speed = gameSpeed * this.speedModifier;
@@ -42,11 +42,7 @@ class Layer {
     if (this.x <= -this.width) {
       this.x = 0;
     }
-    // if (this.x2 <= -this.width) {
-    //   this.x2 = this.width + this.x - this.speed;
-    // }
-    this.x = Math.floor(this.x - this.speed);
-    // this.x2 = Math.floor(this.x2 - this.speed);
+    this.x = this.x - this.speed;
   }
   draw() {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
